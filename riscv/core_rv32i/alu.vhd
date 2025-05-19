@@ -50,19 +50,33 @@ begin
 			r(23) or r(22) or r(21) or r(20) or r(19) or r(18) or r(17) or r(16) or
 			r(15) or r(14) or r(13) or r(12) or r(11) or r(10) or r(9) or r(8) or
 			r(7) or r(6) or r(5) or r(4) or r(3) or r(2) or r(1) or r(0));
+	-- O que esta linha faz é verificar se TODOS os bits do sinal r (que parece ser um valor de 32 bits do resultado da ALU) são '0'.
+	-- O sinal zero recebe '1' apenas se o valor de r for exatamente zero (todos os bits são 0).
+
+	-- Para que serve?
+	-- Este sinal zero é crucial para a implementação de instruções de desvio condicional (branch) em processadores, como:
+	-- BEQ (Branch if Equal) - Desvia se dois valores são iguais (resultado da subtração é zero)
+	-- BNE (Branch if Not Equal) - Desvia se dois valores são diferentes (resultado da subtração não é zero)
+
+	-- another option
+	-- zero <= '1' when r = x"00000000" else '0';
+	--zero <= '1' when r = 0 else '0';
 
 	shift_op2 <= op2(4 downto 0);
+
 
 	left <= '1' when alu_op(0) = '1' else '0';
 	logical <= '1' when alu_op(2) = '0' else '0';
 
-	barrel_shifter: entity work.bshift
-	port map(	left => left,
+	barrel_shifter: entity work.bshift -- outro componente
+	-- deslocador da ALU
+	port map(	left => left, 
 			logical => logical,
 			shift => shift_op2,
 			input => op1,
 			output => shift
-	);
+	); 	-- port map para incluir essse deslocador aqui, o codigo gera os sinais para os deslocador
+		-- mapeou os sinais da ALU pra cá
 
 	result <= r;
 
