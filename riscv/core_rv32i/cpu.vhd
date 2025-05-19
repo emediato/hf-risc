@@ -3,6 +3,9 @@ use ieee.std_logic_1164.all;
 use ieee.std_logic_unsigned.all;
 use ieee.std_logic_arith.all;
 
+-- cpu é feita de 2 components
+-- controlador de interrupcao ligado no datapath
+
 entity processor is
 	port (	clk_i:		in std_logic;
 		rst_i:		in std_logic;
