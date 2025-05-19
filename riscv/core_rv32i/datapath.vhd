@@ -7,8 +7,13 @@ entity datapath is
 	port (	clock:		in std_logic;
 		reset:		in std_logic;
 
-		stall:		in std_logic;
-		mwait:		in std_logic;
+	      -- nao deixa quando uma dependencia é resolvida
+	      --Pipeline Control Signals:
+	-- stall: Input signal that stops pipeline advancement when asserted
+	 -- mwait: Input signal indicating memory operation is waiting (memory not ready)
+		      
+		stall:		in std_logic; -- mem parada
+		mwait:		in std_logic; -- dado que vai ser escrito na memoria
 
 		irq_vector:	in std_logic_vector(31 downto 0);
 		irq:		in std_logic;
@@ -58,23 +63,39 @@ architecture arch_datapath of datapath is
 begin
 
 --
--- FETCH STAGE
---
+-- FETCH STAGE 
 -- 1st stage, instruction memory access, PC update, interrupt acknowledge logic
 
+
+-- pc: The current Program Counter value
+--pc_last: Stores the previous value of PC
+--pc_last2: Stores the value before the previous one (two cycles old PC)
+--pc_next: The next PC value (calculated elsewhere, not shown in this snippet)
+	
 	-- program counter logic
 	process(clock, reset, reg_to_mem_r, mem_to_reg_r, stall, stall_reg)
 	begin
 		if reset = '1' then
+			-- endereco do PC = 0
+			-- When reset is asserted, all PC registers are cleared to zero. This sets the processor to start execution from memory address 0.
 			pc <= (others => '0');
 			pc_last <= (others => '0');
 			pc_last2 <= (others => '0');
+
 		elsif clock'event and clock = '1' then
+			-- This process manages the Program Counter, which keeps track of the address of the current instruction being executed. It's part of the Instruction Fetch stage (1st stage of the pipeline).
+			
+			-- começa a ver o PC
 			if stall = '0' then
 				pc <= pc_next;
 				pc_last <= pc;
 				pc_last2 <= pc_last;
 			end if;
+				
+		-- Stall Behavior:
+		-- If stall = '1', no updates occur to PC registers, effectively pausing the instruction fetch.
+		-- stall = 1 : modo debug, breakpoint
+				
 		end if;
 	end process;
 
@@ -119,7 +140,9 @@ begin
 
 --
 -- DECODE STAGE
---
+-- DEPOIS DA DECODIFICAÇAO, ele extrai a partir da instrucao inst_in_s 
+-- inst_in_s sai da Instruction Memory
+			
 -- 2nd stage, instruction decode, control unit operation, pipeline bubble insertion logic on load/store and branches
 
 	-- pipeline bubble insertion on loads/stores, exceptions, branches and interrupts
@@ -142,6 +165,7 @@ begin
 	ext32 <= (others => '1') when inst_in_s(31) = '1' else (others => '0');
 
 	-- control unit
+	-- unidade de controle instanciada
 	control_unit: entity work.control
 	port map(	opcode => opcode,
 			funct3 => funct3,
@@ -209,7 +233,10 @@ begin
 
 --
 -- EXECUTE STAGE
---
+-- ALU 
+-- ONDE EXECUTA A INSTRUÇAO
+-- BANCO DE REGISTRADORES vai para o 3o estágio, para ficar prox da ALU
+		
 
 -- 3rd stage (a) register file access (read)
 	-- the register file
@@ -240,6 +267,7 @@ begin
 			less_than => less_than
 	);
 
+	-- when = MUX
 	alu_src1 <= read_data1 when alu_src1_ctl_r = '0' else pc_last2;
 	alu_src2 <= 	imm_u_r & x"000" when alu_src2_ctl_r = "000" else
 			imm_i_r when alu_src2_ctl_r = "001" else
