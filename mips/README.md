@@ -1,4 +1,27 @@
+## O Bloco de Controle (BC) do processador MIPS_S
+# Organização e Projeto de  Computadores de D. A. Patterson & J. L. Hennessy, na Seção 4.6 
 
+Organização para as instruções MULTU e DIVU
+As instruções MULTU e DIVU, que realizam a multiplicação e a divisão de números naturais, devido a sua 
+intrínseca maior complexidade, são implementadas fora da ALU. Aqui, as instruções DIVU e MULTU são
+implementadas de maneira estrutural, usando texto VHDL sintetizável. Para tanto, escolheu-se usar algoritmo de 
+implementação de um multiplicador e um divisor seriais em hardware, tal como descrito nas transparências 10 a 
+17 da apresentação disponível no link mostrado abaixo.
+http://www.inf.pucrs.br/~calazans/undergrad/arq1/aulas/aritcomp.pdf
+
+1. Um registrador que guarda o código da instrução atualmente em execução (IR);
+2. Estruturas para controlar a posição de memória onde reside a instrução atual e a próxima a ser 
+executada, compostas por dois registradores (PC e NPC) e um incrementador;
+3. A decodificação de instruções, uma tabela em hardware que, para cada código de 32 bits contido 
+no IR, identifica a instrução que este representa, ou o fato de o código não se referir a nenhuma 
+instrução válida (valor invalid_instruction);
+4. Uma máquina de estados de controle, que gera a sequência de sinais de controle usados em 
+cada ciclo de execução de uma dada instrução.
+A Figura 5 ilustra a estrutura da máquina de estados de controle da MIPS_S, onde o próximo estado é 
+função apenas do estado atual e da instrução armazenada no registrador IR.
+• IR (instruction register): armazena o código de operação (opcode) da instrução atual e o(s) 
+código(s) do(s) operando(s) desta. Ele é um registrador de 32 bits.
+• PC (program counter): é o contador de programa. Também é um registrador de 32 bits.
 
 ## Useful links
 
