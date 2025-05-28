@@ -1,5 +1,12 @@
-# HF-RISC SoC
+# HF-RISC 
+As instruções MULTU e DIVU, que realizam a multiplicação e a divisão de números naturais, devido a sua 
+intrínseca maior complexidade, são implementadas fora da ALU. Aqui, as instruções DIVU e MULTU são
+implementadas de maneira estrutural, usando texto VHDL sintetizável. Para tanto, escolheu-se usar algoritmo de 
+implementação de um multiplicador e um divisor seriais em hardware, tal como descrito nas transparências 10 a 
+17 da apresentação disponível no link mostrado abaixo.
 
+https://www.inf.pucrs.br/~calazans/undergrad/arq1/aulas/aritcomp.pdf
+ 
 ---
 ### Description
 
