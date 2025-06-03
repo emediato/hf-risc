@@ -44,6 +44,10 @@ A complete set of flags to be used with the compiler is provided in example appl
 
 ### Instruction set
 
+#### Assembly compilation
+
+https://github.com/dpetersanderson/MARS/releases/
+
 **MIPS**
 
 The following instructions from the MIPS I instruction set were implemented (subset of 41 opcodes):
