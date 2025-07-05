@@ -1,3 +1,18 @@
+## zedboard
+
+7 seg display
+https://www.beyond-circuits.com/wordpress/tutorial/tutorial4/#:~:text=If%20you%20look%20on%20the,AF%2C%20AG%2C%20and%20CAT.
+
+
+https://www.cse.cuhk.edu.hk/~mcyang/ceng3430/2019S/Lec06%20Use%20of%20Clock%20Sources%20and%20Peripheral%20Modules%20on%20ZedBoard.pdf
+
+https://github.com/nickg/zpu/blob/master/zpu/hdl/zealot/fpga/xilinx-sp601-xc6slx16/synthesis_config/xilinx-sp601-xc6slx16.ucf
+
+## basys 3
+
+https://github.com/TreverWagenhals/private/blob/master/School/FPGA%20Logic%20Design/Basys3%20Generic/basys3_top_wrapper_generic.vhd
+
+
 # O Bloco de Controle (BC) do processador MIPS_S
 1. Um registrador que guarda o código da instrução atualmente em execução (IR);
 2. Estruturas para controlar a posição de memória onde reside a instrução atual e a próxima a ser 
