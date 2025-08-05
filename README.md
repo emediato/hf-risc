@@ -1,3 +1,7 @@
+## Open Source
+
+Yosys, nextpnr, or LiteX 
+
 # HF-RISC 
 
 ### Description
